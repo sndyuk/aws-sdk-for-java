@@ -16,4 +16,5 @@ target/
 *.scc
 *.ser
 bin/
-
+install.sh
+reflesh.sh

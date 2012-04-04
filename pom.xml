@@ -119,14 +119,14 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
 		
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>[3.0,)</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
 		
     </dependencies>
@@ -158,19 +158,19 @@
       </pluginManagement>
 
       <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+<!--         <plugin> -->
+<!--           <groupId>org.apache.maven.plugins</groupId> -->
+<!--           <artifactId>maven-gpg-plugin</artifactId> -->
+<!--           <executions> -->
+<!--             <execution> -->
+<!--               <id>sign-artifacts</id> -->
+<!--               <phase>verify</phase> -->
+<!--               <goals> -->
+<!--                 <goal>sign</goal> -->
+<!--               </goals> -->
+<!--             </execution> -->
+<!--           </executions> -->
+<!--         </plugin> -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
@@ -188,7 +188,21 @@
            </additionalConfig>
          </configuration>
         </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
+      
     </build>
 
 </project>
