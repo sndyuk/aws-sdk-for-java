@@ -37,7 +37,7 @@ import com.amazonaws.util.XMLWriter;
 public class DeleteHostedZoneRequestMarshaller implements Marshaller<Request<DeleteHostedZoneRequest>, DeleteHostedZoneRequest> {
 
     public Request<DeleteHostedZoneRequest> marshall(DeleteHostedZoneRequest deleteHostedZoneRequest) {
-        if (deleteHostedZoneRequest == null) { 
+        if (deleteHostedZoneRequest == null) {
             throw new AmazonClientException("Invalid argument passed to marshall(...)");
         }
 
@@ -51,7 +51,7 @@ public class DeleteHostedZoneRequestMarshaller implements Marshaller<Request<Del
             String queryString = uriResourcePath.substring(uriResourcePath.indexOf("?") + 1);
             uriResourcePath    = uriResourcePath.substring(0, uriResourcePath.indexOf("?"));
 
-            for (String s : queryString.split("[ &]")) {
+            for (String s : queryString.split("[;&]")) {
                 String[] nameValuePair = s.split("=");
                 if (nameValuePair.length == 2) {
                     request.addParameter(nameValuePair[0], nameValuePair[1]);

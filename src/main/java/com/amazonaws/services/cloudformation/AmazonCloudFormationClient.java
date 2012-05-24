@@ -43,55 +43,37 @@ import com.amazonaws.services.cloudformation.model.transform.*;
  * completes.
  * <p>
  * AWS CloudFormation <p>
- * This is the AWS CloudFormation API Reference. The major sections of
- * this guide are described in the following table.
+ * This is the AWS CloudFormation API Reference. The major sections of this guide are described in the following table.
  * </p>
  * 
  * <ul>
- * <li> <a
- * rvices.com/AWSCloudFormation/latest/APIReference/API_Operations.html">
- * Actions </a> : Alphabetical list of CloudFormation actions</li>
- * <li> <a
- * webservices.com/AWSCloudFormation/latest/APIReference/API_Types.html">
- * Data Types </a> : Alphabetical list of CloudFormation data types</li>
- * <li> <a
- * ices.com/AWSCloudFormation/latest/APIReference/CommonParameters.html">
- * Common Parameters </a> : Parameters that all Query actions can
- * use</li>
- * <li> <a
- * services.com/AWSCloudFormation/latest/APIReference/CommonErrors.html">
- * Common Errors </a> : Client and server errors that all actions can
- * return</li>
+ * <li> <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/APIReference/API_Operations.html"> Actions </a> : Alphabetical list of
+ * CloudFormation actions</li>
+ * <li> <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/APIReference/API_Types.html"> Data Types </a> : Alphabetical list of
+ * CloudFormation data types</li>
+ * <li> <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/APIReference/CommonParameters.html"> Common Parameters </a> : Parameters
+ * that all Query actions can use</li>
+ * <li> <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/APIReference/CommonErrors.html"> Common Errors </a> : Client and server
+ * errors that all actions can return</li>
  * 
  * </ul>
  * <p>
- * This guide is for programmers who need detailed information about the
- * CloudFormation APIs. You use AWS CloudFormation to create and manage
- * AWS infrastructure deployments predictably and repeatedly.
- * CloudFormation helps you leverage AWS products such as Amazon EC2,
- * EBS, Amazon SNS, ELB, and Auto Scaling to build highly-reliable,
- * highly scalable, cost effective applications without worrying about
- * creating and configuring the underlying the AWS infrastructure.
+ * This guide is for programmers who need detailed information about the CloudFormation APIs. You use AWS CloudFormation to create and manage AWS
+ * infrastructure deployments predictably and repeatedly. CloudFormation helps you leverage AWS products such as Amazon EC2, EBS, Amazon SNS, ELB, and
+ * Auto Scaling to build highly-reliable, highly scalable, cost effective applications without worrying about creating and configuring the underlying the
+ * AWS infrastructure.
  * </p>
  * <p>
- * Through the use of a template file you write, and a few AWS
- * CloudFormation commands or API actions, AWS CloudFormation enables you
- * to manage a collection of resources together as a single unit called a
- * stack. AWS CloudFormation creates and deletes all member resources of
- * the stack together and manages all dependencies between the resources
- * for you.
+ * Through the use of a template file you write, and a few AWS CloudFormation commands or API actions, AWS CloudFormation enables you to manage a
+ * collection of resources together as a single unit called a stack. AWS CloudFormation creates and deletes all member resources of the stack together
+ * and manages all dependencies between the resources for you.
  * </p>
  * <p>
- * For more information about this product, go to the <a
- * href="http://aws.amazon.com/cloudformation/"> CloudFormation Product
- * Page </a> .
+ * For more information about this product, go to the <a href="http://aws.amazon.com/cloudformation/"> CloudFormation Product Page </a> .
  * </p>
  * <p>
- * Amazon CloudFormation makes use of other AWS products. If you need
- * additional technical information about a specific AWS product, you can
- * find the product's technical documentation at <a
- * href="http://aws.amazon.com/documentation/">
- * http://aws.amazon.com/documentation/ </a> .
+ * Amazon CloudFormation makes use of other AWS products. If you need additional technical information about a specific AWS product, you can find the
+ * product's technical documentation at <a href="http://aws.amazon.com/documentation/"> http://aws.amazon.com/documentation/ </a> .
  * </p>
  */
 public class AmazonCloudFormationClient extends AmazonWebServiceClient implements AmazonCloudFormation {
@@ -107,7 +89,7 @@ public class AmazonCloudFormationClient extends AmazonWebServiceClient implement
     
     
     /** AWS signer for authenticating requests. */
-    private QueryStringSigner signer;
+    private AWS4Signer signer;
 
 
     /**
@@ -192,7 +174,9 @@ public class AmazonCloudFormationClient extends AmazonWebServiceClient implement
         exceptionUnmarshallers.add(new StandardErrorUnmarshaller());
         setEndpoint("cloudformation.us-east-1.amazonaws.com");
 
-        signer = new QueryStringSigner();
+        signer = new AWS4Signer();
+        
+        signer.setServiceName("cloudformation");
         
 
         HandlerChainFactory chainFactory = new HandlerChainFactory();
@@ -739,6 +723,47 @@ public class AmazonCloudFormationClient extends AmazonWebServiceClient implement
      */
     public DescribeStackResourcesResult describeStackResources() throws AmazonServiceException, AmazonClientException {
         return describeStackResources(new DescribeStackResourcesRequest());
+    }
+    
+    /**
+     * Overrides the default endpoint for this client and explicitly provides 
+     * an AWS region ID and AWS service name to use when the client calculates a signature
+     * for requests.  In almost all cases, this region ID and service name
+     * are automatically determined from the endpoint, and callers should use the simpler
+     * one-argument form of setEndpoint instead of this method.   
+     * <p>
+     * <b>This method is not threadsafe. Endpoints should be configured when the
+     * client is created and before any service requests are made. Changing it
+     * afterwards creates inevitable race conditions for any service requests in
+     * transit.</b>
+     * <p>
+     * Callers can pass in just the endpoint (ex: "ec2.amazonaws.com") or a full
+     * URL, including the protocol (ex: "https://ec2.amazonaws.com"). If the
+     * protocol is not specified here, the default protocol from this client's
+     * {@link ClientConfiguration} will be used, which by default is HTTPS.
+     * <p>
+     * For more information on using AWS regions with the AWS SDK for Java, and
+     * a complete list of all available endpoints for all AWS services, see: 
+     * <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=3912">
+     * http://developer.amazonwebservices.com/connect/entry.jspa?externalID=3912</a>
+     * 
+     * @param endpoint
+     *            The endpoint (ex: "ec2.amazonaws.com") or a full URL,
+     *            including the protocol (ex: "https://ec2.amazonaws.com") of
+     *            the region specific AWS endpoint this client will communicate
+     *            with.
+     * @param serviceName 
+     *            The name of the AWS service to use when signing requests.
+     * @param regionId 
+     *            The ID of the region in which this service resides.
+     *      
+     * @throws IllegalArgumentException
+     *             If any problems are detected with the specified endpoint.
+     */
+    public void setEndpoint(String endpoint, String serviceName, String regionId) throws IllegalArgumentException {
+        setEndpoint(endpoint);
+        signer.setServiceName(serviceName);
+        signer.setRegionName(regionId);
     }
     
 

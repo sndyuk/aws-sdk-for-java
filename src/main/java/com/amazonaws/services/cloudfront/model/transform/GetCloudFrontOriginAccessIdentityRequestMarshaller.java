@@ -37,21 +37,21 @@ import com.amazonaws.util.XMLWriter;
 public class GetCloudFrontOriginAccessIdentityRequestMarshaller implements Marshaller<Request<GetCloudFrontOriginAccessIdentityRequest>, GetCloudFrontOriginAccessIdentityRequest> {
 
     public Request<GetCloudFrontOriginAccessIdentityRequest> marshall(GetCloudFrontOriginAccessIdentityRequest getCloudFrontOriginAccessIdentityRequest) {
-        if (getCloudFrontOriginAccessIdentityRequest == null) { 
+        if (getCloudFrontOriginAccessIdentityRequest == null) {
             throw new AmazonClientException("Invalid argument passed to marshall(...)");
         }
 
         Request<GetCloudFrontOriginAccessIdentityRequest> request = new DefaultRequest<GetCloudFrontOriginAccessIdentityRequest>(getCloudFrontOriginAccessIdentityRequest, "AmazonCloudFront");
         request.setHttpMethod(HttpMethodName.GET);
 
-        String uriResourcePath = "2012-03-15/origin-access-identity/cloudfront/{Id}"; 
+        String uriResourcePath = "2012-05-05/origin-access-identity/cloudfront/{Id}"; 
         uriResourcePath = uriResourcePath.replace("{Id}", getString(getCloudFrontOriginAccessIdentityRequest.getId())); 
 
         if (uriResourcePath.contains("?")) {
             String queryString = uriResourcePath.substring(uriResourcePath.indexOf("?") + 1);
             uriResourcePath    = uriResourcePath.substring(0, uriResourcePath.indexOf("?"));
 
-            for (String s : queryString.split("[ &]")) {
+            for (String s : queryString.split("[;&]")) {
                 String[] nameValuePair = s.split("=");
                 if (nameValuePair.length == 2) {
                     request.addParameter(nameValuePair[0], nameValuePair[1]);

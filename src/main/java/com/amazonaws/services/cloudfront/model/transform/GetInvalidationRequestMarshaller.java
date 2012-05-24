@@ -37,14 +37,14 @@ import com.amazonaws.util.XMLWriter;
 public class GetInvalidationRequestMarshaller implements Marshaller<Request<GetInvalidationRequest>, GetInvalidationRequest> {
 
     public Request<GetInvalidationRequest> marshall(GetInvalidationRequest getInvalidationRequest) {
-        if (getInvalidationRequest == null) { 
+        if (getInvalidationRequest == null) {
             throw new AmazonClientException("Invalid argument passed to marshall(...)");
         }
 
         Request<GetInvalidationRequest> request = new DefaultRequest<GetInvalidationRequest>(getInvalidationRequest, "AmazonCloudFront");
         request.setHttpMethod(HttpMethodName.GET);
 
-        String uriResourcePath = "2012-03-15/distribution/{DistributionId}/invalidation/{Id}"; 
+        String uriResourcePath = "2012-05-05/distribution/{DistributionId}/invalidation/{Id}"; 
         uriResourcePath = uriResourcePath.replace("{DistributionId}", getString(getInvalidationRequest.getDistributionId())); 
         uriResourcePath = uriResourcePath.replace("{Id}", getString(getInvalidationRequest.getId())); 
 
@@ -52,7 +52,7 @@ public class GetInvalidationRequestMarshaller implements Marshaller<Request<GetI
             String queryString = uriResourcePath.substring(uriResourcePath.indexOf("?") + 1);
             uriResourcePath    = uriResourcePath.substring(0, uriResourcePath.indexOf("?"));
 
-            for (String s : queryString.split("[ &]")) {
+            for (String s : queryString.split("[;&]")) {
                 String[] nameValuePair = s.split("=");
                 if (nameValuePair.length == 2) {
                     request.addParameter(nameValuePair[0], nameValuePair[1]);

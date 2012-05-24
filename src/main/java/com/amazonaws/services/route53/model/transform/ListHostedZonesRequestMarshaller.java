@@ -37,7 +37,7 @@ import com.amazonaws.util.XMLWriter;
 public class ListHostedZonesRequestMarshaller implements Marshaller<Request<ListHostedZonesRequest>, ListHostedZonesRequest> {
 
     public Request<ListHostedZonesRequest> marshall(ListHostedZonesRequest listHostedZonesRequest) {
-        if (listHostedZonesRequest == null) { 
+        if (listHostedZonesRequest == null) {
             throw new AmazonClientException("Invalid argument passed to marshall(...)");
         }
 
@@ -52,7 +52,7 @@ public class ListHostedZonesRequestMarshaller implements Marshaller<Request<List
             String queryString = uriResourcePath.substring(uriResourcePath.indexOf("?") + 1);
             uriResourcePath    = uriResourcePath.substring(0, uriResourcePath.indexOf("?"));
 
-            for (String s : queryString.split("[ &]")) {
+            for (String s : queryString.split("[;&]")) {
                 String[] nameValuePair = s.split("=");
                 if (nameValuePair.length == 2) {
                     request.addParameter(nameValuePair[0], nameValuePair[1]);
