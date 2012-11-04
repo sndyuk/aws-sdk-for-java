@@ -14,6 +14,8 @@
  */
 package com.amazonaws.auth;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +63,11 @@ public class AWS4Signer extends AbstractAWSSigner {
      * @see com.amazonaws.auth.Signer#sign(com.amazonaws.Request, com.amazonaws.auth.AWSCredentials)
      */
     public void sign(Request<?> request, AWSCredentials credentials) throws AmazonClientException {
+        // annonymous credentials, don't sign
+        if ( credentials instanceof AnonymousAWSCredentials ) {
+            return;
+        }
+
         AWSCredentials sanitizedCredentials = sanitizeCredentials(credentials);
         if ( sanitizedCredentials instanceof AWSSessionCredentials ) {
             addSessionCredentials(request, (AWSSessionCredentials) sanitizedCredentials);
@@ -89,25 +96,35 @@ public class AWS4Signer extends AbstractAWSSigner {
         String dateTime  = dateTimeFormat.format(date);
         String dateStamp = dateStampFormat.format(date);
 
+        InputStream payloadStream = getBinaryRequestPayloadStream(request);
+        payloadStream.mark(-1);
+        String contentSha256 = BinaryUtils.toHex(hash(payloadStream));
+        try {
+            payloadStream.reset();
+        } catch (IOException e) {
+            throw new AmazonClientException("Unable to reset stream after calculating AWS4 signature", e);
+        }
+
         request.addHeader("X-Amz-Date", dateTime);
+        request.addHeader("x-amz-content-sha256", contentSha256);
 
         String canonicalRequest =
-            request.getHttpMethod().toString() + "\n" +
-            super.getCanonicalizedResourcePath(request.getResourcePath()) + "\n" +
-            getCanonicalizedQueryString(request) + "\n" +
-            getCanonicalizedHeaderString(request) + "\n" +
-            getSignedHeadersString(request) + "\n" +
-            BinaryUtils.toHex(hash(getRequestPayload(request)));
+                request.getHttpMethod().toString() + "\n" +
+                        super.getCanonicalizedResourcePath(request.getResourcePath()) + "\n" +
+                        getCanonicalizedQueryString(request) + "\n" +
+                        getCanonicalizedHeaderString(request) + "\n" +
+                        getSignedHeadersString(request) + "\n" +
+                        contentSha256;
 
         log.debug("AWS4 Canonical Request: '\"" + canonicalRequest + "\"");
 
         String scope = dateStamp + "/" + regionName + "/" + serviceName + "/" + TERMINATOR;
         String signingCredentials = sanitizedCredentials.getAWSAccessKeyId() + "/" + scope;
         String stringToSign =
-            ALGORITHM + "\n" +
-            dateTime + "\n" +
-            scope + "\n" +
-            BinaryUtils.toHex(hash(canonicalRequest));
+                ALGORITHM + "\n" +
+                        dateTime + "\n" +
+                        scope + "\n" +
+                        BinaryUtils.toHex(hash(canonicalRequest));
         log.debug("AWS4 String to Sign: '\"" + stringToSign + "\"");
 
         // AWS4 uses a series of derived keys, formed by hashing different pieces of data
@@ -119,19 +136,17 @@ public class AWS4Signer extends AbstractAWSSigner {
 
         byte[] signature = sign(stringToSign.getBytes(), kSigning, SigningAlgorithm.HmacSHA256);
 
-        String signatureAlgorithmHeader =
-            "Algorithm=" + ALGORITHM;
         String credentialsAuthorizationHeader =
-            "Credential=" + signingCredentials;
+                "Credential=" + signingCredentials;
         String signedHeadersAuthorizationHeader =
-            "SignedHeaders=" + getSignedHeadersString(request);
+                "SignedHeaders=" + getSignedHeadersString(request);
         String signatureAuthorizationHeader =
-            "Signature=" + BinaryUtils.toHex(signature);
+                "Signature=" + BinaryUtils.toHex(signature);
 
         String authorizationHeader = ALGORITHM + " "
-           + credentialsAuthorizationHeader + ", "
-           + signedHeadersAuthorizationHeader + ", "
-           + signatureAuthorizationHeader;
+                + credentialsAuthorizationHeader + ", "
+                + signedHeadersAuthorizationHeader + ", "
+                + signatureAuthorizationHeader;
 
         request.addHeader("Authorization", authorizationHeader);
     }
@@ -193,7 +208,7 @@ public class AWS4Signer extends AbstractAWSSigner {
 
         StringBuilder buffer = new StringBuilder();
         for (String header : sortedHeaders) {
-            buffer.append(header.toLowerCase() + ":" + request.getHeaders().get(header));
+            buffer.append(header.toLowerCase().replaceAll("\\s+", " ") + ":" + request.getHeaders().get(header).replaceAll("\\s+", " "));
             buffer.append("\n");
         }
 

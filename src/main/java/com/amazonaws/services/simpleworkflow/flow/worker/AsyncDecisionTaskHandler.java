@@ -72,6 +72,10 @@ public class AsyncDecisionTaskHandler extends DecisionTaskHandler {
         HistoryHelper historyHelper = new HistoryHelper(decisionTaskIterator);
         AsyncDecider decider = createDecider(historyHelper);
         decider.decide();
+        DecisionsHelper decisionsHelper = decider.getDecisionsHelper();
+        if (decisionsHelper.isWorkflowFailed()) {
+            throw new IllegalStateException("Cannot load failed workflow", decisionsHelper.getWorkflowFailureCause());
+        }
         return decider.getWorkflowDefinition();
     }
 

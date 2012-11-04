@@ -46,6 +46,7 @@ public class KeysAndAttributesJsonUnmarshaller implements Unmarshaller<KeysAndAt
         while (true) {
             if (token == null) break;
 
+            
             if (token == FIELD_NAME || token == START_OBJECT) {
                 if (context.testExpression("Keys", targetDepth)) {
                     keysAndAttributes.setKeys(new ListUnmarshaller<Key>(KeyJsonUnmarshaller.getInstance()).unmarshall(context));
@@ -53,9 +54,15 @@ public class KeysAndAttributesJsonUnmarshaller implements Unmarshaller<KeysAndAt
                 if (context.testExpression("AttributesToGet", targetDepth)) {
                     keysAndAttributes.setAttributesToGet(new ListUnmarshaller<String>(StringJsonUnmarshaller.getInstance()).unmarshall(context));
                 }
+                if (context.testExpression("ConsistentRead", targetDepth)) {
+                    context.nextToken();
+                    keysAndAttributes.setConsistentRead(BooleanJsonUnmarshaller.getInstance().unmarshall(context));
+                }
             } else if (token == END_ARRAY || token == END_OBJECT) {
                 if (context.getCurrentDepth() <= originalDepth) break;
             }
+            
+
             token = context.nextToken();
         }
         

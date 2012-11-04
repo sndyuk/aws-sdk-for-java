@@ -16,7 +16,7 @@ package com.amazonaws.services.simpleemail.model;
 
 /**
  * <p>
- * Represents a list of all identities for the AWS Account.
+ * Represents a list of all verified identities for the AWS Account.
  * </p>
  */
 public class ListIdentitiesResult {

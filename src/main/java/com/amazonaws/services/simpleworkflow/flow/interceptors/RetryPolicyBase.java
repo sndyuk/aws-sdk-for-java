@@ -64,16 +64,16 @@ public abstract class RetryPolicyBase implements RetryPolicy {
     public void setExceptionsToExclude(List<Class<? extends Throwable>> exceptionsToExclude) {
         List<Class<? extends Throwable>> exceptionsToExcludeCopy = new ArrayList<Class<? extends Throwable>>();
         if (exceptionsToExclude != null) {
-            exceptionsToExcludeCopy.addAll(exceptionsToRetry);
+            exceptionsToExcludeCopy.addAll(exceptionsToExclude);
         }
         
         this.exceptionsToExclude = exceptionsToExcludeCopy;
     }
     
-    public RetryPolicyBase withExceptionsToExclude(Collection<Class<? extends Throwable>> exceptionsToRetry) {
+    public RetryPolicyBase withExceptionsToExclude(Collection<Class<? extends Throwable>> exceptionsToExclude) {
         List<Class<? extends Throwable>> exceptionsToExcludeCopy = new ArrayList<Class<? extends Throwable>>();
         if (exceptionsToExclude != null) {
-            exceptionsToExcludeCopy.addAll(exceptionsToRetry);
+            exceptionsToExcludeCopy.addAll(exceptionsToExclude);
         }
         
         this.exceptionsToExclude = exceptionsToExcludeCopy;

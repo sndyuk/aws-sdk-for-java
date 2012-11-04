@@ -31,6 +31,15 @@ public final class FlowHelpers {
         return Long.toString(seconds);
     }
     
+    
+    public static long durationToSeconds(String duration) {
+        if (duration == null || duration.equals(PredefinedDuration.NONE.toString())) {
+            return FlowConstants.NONE;
+        } else {
+            return Long.parseLong(duration);
+        }
+    }
+    
     public static Object[] validateInput(Method method, Object[] args) {
         Class<?>[] paramterTypes = method.getParameterTypes();
         int numberOfParameters = paramterTypes.length;

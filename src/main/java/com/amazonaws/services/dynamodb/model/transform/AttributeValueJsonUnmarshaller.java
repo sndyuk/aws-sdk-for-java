@@ -46,6 +46,7 @@ public class AttributeValueJsonUnmarshaller implements Unmarshaller<AttributeVal
         while (true) {
             if (token == null) break;
 
+            
             if (token == FIELD_NAME || token == START_OBJECT) {
                 if (context.testExpression("S", targetDepth)) {
                     context.nextToken();
@@ -55,15 +56,24 @@ public class AttributeValueJsonUnmarshaller implements Unmarshaller<AttributeVal
                     context.nextToken();
                     attributeValue.setN(StringJsonUnmarshaller.getInstance().unmarshall(context));
                 }
+                if (context.testExpression("B", targetDepth)) {
+                    context.nextToken();
+                    attributeValue.setB(ByteBufferJsonUnmarshaller.getInstance().unmarshall(context));
+                }
                 if (context.testExpression("SS", targetDepth)) {
                     attributeValue.setSS(new ListUnmarshaller<String>(StringJsonUnmarshaller.getInstance()).unmarshall(context));
                 }
                 if (context.testExpression("NS", targetDepth)) {
                     attributeValue.setNS(new ListUnmarshaller<String>(StringJsonUnmarshaller.getInstance()).unmarshall(context));
                 }
+                if (context.testExpression("BS", targetDepth)) {
+                    attributeValue.setBS(new ListUnmarshaller<java.nio.ByteBuffer>(ByteBufferJsonUnmarshaller.getInstance()).unmarshall(context));
+                }
             } else if (token == END_ARRAY || token == END_OBJECT) {
                 if (context.getCurrentDepth() <= originalDepth) break;
             }
+            
+
             token = context.nextToken();
         }
         

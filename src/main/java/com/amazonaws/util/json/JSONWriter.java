@@ -25,7 +25,10 @@ package com.amazonaws.util.json;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.ByteBuffer;
 import java.util.Date;
+
+import com.amazonaws.util.BinaryUtils;
 
 /**
  * JSONWriter provides a quick and convenient way of producing JSON text.
@@ -158,7 +161,7 @@ public class JSONWriter {
     private JSONWriter end(char m, char c) throws JSONException {
         if (this.mode != m) {
             throw new JSONException(m == 'a' ? "Misplaced endArray." :
-            		"Misplaced endObject.");
+                    "Misplaced endObject.");
         }
         this.pop(m);
         try {
@@ -317,6 +320,21 @@ public class JSONWriter {
      */
     public JSONWriter value(Date date) throws JSONException {
         return this.value(new Long(date.getTime() / 1000));
+    }
+
+    /**
+     * Appends a ByteBuffer value.
+     *
+     * @param b A ByteBuffer.
+     * @return this
+     * @throws JSONException
+     */
+    public JSONWriter value(ByteBuffer b) throws JSONException {
+        b.mark();
+        byte[] bytes = new byte[b.capacity()];
+        b.get(bytes, 0, bytes.length);
+        b.reset();
+        return this.value(BinaryUtils.toBase64(bytes));
     }
 
     /**

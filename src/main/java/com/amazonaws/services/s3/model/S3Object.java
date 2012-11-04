@@ -11,6 +11,9 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ * 
+ * Portions copyright 2006-2009 James Murty. Please see LICENSE.txt 
+ * for applicable license terms and NOTICE.txt for applicable notices. 
  */
 package com.amazonaws.services.s3.model;
 
@@ -40,6 +43,9 @@ public class S3Object {
 
     /** The stream containing the contents of this object from S3 */
     private S3ObjectInputStream objectContent;
+    
+    /** The redirect location for this object */
+    private String redirectLocation;
 
     /**
      * Gets the metadata stored by Amazon S3 for this object. The
@@ -154,6 +160,24 @@ public class S3Object {
      */
     public void setKey(String key) {
         this.key = key;
+    }
+    
+    /**
+     * Gets the redirect location for this object.
+     *
+     */
+    public String getRedirectLocation() {
+    	return this.redirectLocation;
+    }
+    
+    /**
+     * Sets the redirect location for this object.
+     *
+     * @param redirectLocation
+     *            the redirect location for that object.
+     */
+    public void setRedirectLocation(String redirectLocation) {
+    	this.redirectLocation = redirectLocation;
     }
 
     /**

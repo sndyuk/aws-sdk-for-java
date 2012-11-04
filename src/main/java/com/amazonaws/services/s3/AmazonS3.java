@@ -28,10 +28,12 @@ import com.amazonaws.services.s3.internal.Constants;
 import com.amazonaws.services.s3.model.AbortMultipartUploadRequest;
 import com.amazonaws.services.s3.model.AccessControlList;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.BucketCrossOriginConfiguration;
 import com.amazonaws.services.s3.model.BucketLifecycleConfiguration;
 import com.amazonaws.services.s3.model.BucketLoggingConfiguration;
 import com.amazonaws.services.s3.model.BucketNotificationConfiguration;
 import com.amazonaws.services.s3.model.BucketPolicy;
+import com.amazonaws.services.s3.model.BucketTaggingConfiguration;
 import com.amazonaws.services.s3.model.BucketVersioningConfiguration;
 import com.amazonaws.services.s3.model.BucketWebsiteConfiguration;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -160,6 +162,28 @@ public interface AmazonS3 {
      */
     public void changeObjectStorageClass(String bucketName, String key, StorageClass newStorageClass)
         throws AmazonClientException, AmazonServiceException;
+    
+    
+    /**
+     * <p>
+     * Changes the Amazon S3 redirect location for a specific object.
+     * </p>
+     * @param bucketName
+     *            The name of the bucket containing the object.
+     * @param key
+     *            The key of the object within the specified bucket.
+     * @param newRedirectLocation
+     *            The new redirect location for the specified object.
+     *
+     * @throws AmazonClientException
+     *             If any errors are encountered in the client while making the
+     *             request or handling the response.
+     * @throws AmazonServiceException
+     *             If any errors occurred in Amazon S3 while processing the
+     *             request.
+     */
+    public void setObjectRedirectLocation(String bucketName, String key, String newRedirectLocation)
+            throws AmazonClientException, AmazonServiceException;
 
     /**
      * <p>
@@ -2650,6 +2674,68 @@ public interface AmazonS3 {
      *            configuration.
      */
     public void deleteBucketLifecycleConfiguration(String bucketName);
+    
+    /**
+     * Gets the cross origin configuration for the specified bucket, or null if no
+     * configuration has been established.
+     * 
+     * @param bucketName
+     *            The name of the bucket for which to retrieve cross origin
+     *            configuration.
+     */
+    public BucketCrossOriginConfiguration getBucketCrossOriginConfiguration(String bucketName);
+    
+    /**
+     * Sets the cross origin configuration for the specified bucket.
+     * 
+     * @param bucketName
+     *            The name of the bucket for which to retrieve cross origin
+     *            configuration.
+     * @param bucketCrossOriginConfiguration    
+     * 			  The new cross origin configuration for this bucket, which
+     *            completely replaces any existing configuration.
+     */
+    public void setBucketCrossOriginConfiguration(String bucketName, BucketCrossOriginConfiguration bucketCrossOriginConfiguration);
+    
+    /**
+     * Delete the cross origin configuration for the specified bucket.
+     * 
+     * @param bucketName
+     *            The name of the bucket for which to retrieve cross origin
+     *            configuration.
+     */
+    public void deleteBucketCrossOriginConfiguration(String bucketName);
+    
+    /**
+     * Gets the tagging configuration for the specified bucket, or null if no
+     * configuration has been established.
+     * 
+     * @param bucketName
+     *            The name of the bucket for which to retrieve tagging
+     *            configuration.
+     */
+    public BucketTaggingConfiguration getBucketTaggingConfiguration(String bucketName);
+
+    /**
+     * Sets the tagging configuration for the specified bucket.
+     * 
+     * @param bucketName
+     *            The name of the bucket for which to set the tagging
+     *            configuration.
+     * @param bucketTaggingConfiguration
+     *            The new tagging configuration for this bucket, which
+     *            completely replaces any existing configuration.
+     */
+    public void setBucketTaggingConfiguration(String bucketName, BucketTaggingConfiguration bucketTaggingConfiguration);
+
+    /**
+     * Removes the Tagging configuration for the bucket specified.
+     * 
+     * @param bucketName
+     *            The name of the bucket for which to remove the tagging
+     *            configuration.
+     */
+    public void deleteBucketTaggingConfiguration(String bucketName);
     
     /**
      * Gets the notification configuration for the specified bucket.

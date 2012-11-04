@@ -20,9 +20,11 @@ import java.util.List;
 import com.amazonaws.services.s3.internal.DeleteObjectsResponse;
 import com.amazonaws.services.s3.model.AccessControlList;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.BucketCrossOriginConfiguration;
 import com.amazonaws.services.s3.model.BucketLifecycleConfiguration;
 import com.amazonaws.services.s3.model.BucketLoggingConfiguration;
 import com.amazonaws.services.s3.model.BucketNotificationConfiguration;
+import com.amazonaws.services.s3.model.BucketTaggingConfiguration;
 import com.amazonaws.services.s3.model.BucketVersioningConfiguration;
 import com.amazonaws.services.s3.model.BucketWebsiteConfiguration;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
@@ -31,6 +33,7 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.Owner;
 import com.amazonaws.services.s3.model.PartListing;
 import com.amazonaws.services.s3.model.VersionListing;
+import com.amazonaws.services.s3.model.transform.XmlResponsesSaxParser.BucketCrossOriginConfigurationHandler;
 import com.amazonaws.services.s3.model.transform.XmlResponsesSaxParser.CompleteMultipartUploadHandler;
 import com.amazonaws.services.s3.model.transform.XmlResponsesSaxParser.CopyObjectResultHandler;
 import com.amazonaws.transform.Unmarshaller;
@@ -158,6 +161,17 @@ public class Unmarshallers {
                     .parseNotificationConfigurationResponse(in).getConfiguration();
         }
     }
+    
+    /**
+     * Unmarshaller for the BucketTaggingConfiguration XML response.
+     */
+    public static final class BucketTaggingConfigurationUnmarshaller implements
+            Unmarshaller<BucketTaggingConfiguration, InputStream> {
+        public BucketTaggingConfiguration unmarshall(InputStream in) throws Exception {
+            return new XmlResponsesSaxParser()
+                    .parseTaggingConfigurationResponse(in).getConfiguration();
+        }
+    }
 
     /**
      * Unmarshaller for the a direct InputStream response.
@@ -224,6 +238,13 @@ public class Unmarshallers {
 
         public BucketLifecycleConfiguration unmarshall(InputStream in) throws Exception {
             return new XmlResponsesSaxParser().parseBucketLifecycleConfigurationResponse(in).getConfiguration();
+        }
+    }
+    
+    public static final class BucketCrossOriginConfigurationUnmarshaller implements
+    	Unmarshaller<BucketCrossOriginConfiguration, InputStream> {
+    	public BucketCrossOriginConfiguration unmarshall(InputStream in) throws Exception {
+            return new XmlResponsesSaxParser().parseBucketCrossOriginConfigurationResponse(in).getConfiguration();
         }
     }
 

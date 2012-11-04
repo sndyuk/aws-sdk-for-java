@@ -49,8 +49,8 @@ public interface AmazonAutoScaling {
      * Overrides the default endpoint for this client ("https://autoscaling.amazonaws.com").
      * Callers can use this method to control which AWS region they want to work with.
      * <p>
-     * Callers can pass in just the endpoint (ex: "ec2.amazonaws.com") or a full
-     * URL, including the protocol (ex: "https://ec2.amazonaws.com"). If the
+     * Callers can pass in just the endpoint (ex: "autoscaling.amazonaws.com") or a full
+     * URL, including the protocol (ex: "https://autoscaling.amazonaws.com"). If the
      * protocol is not specified here, the default protocol from this client's
      * {@link ClientConfiguration} will be used, which by default is HTTPS.
      * <p>
@@ -60,8 +60,8 @@ public interface AmazonAutoScaling {
      * http://developer.amazonwebservices.com/connect/entry.jspa?externalID=3912</a>
      *
      * @param endpoint
-     *            The endpoint (ex: "ec2.amazonaws.com") or a full URL,
-     *            including the protocol (ex: "https://ec2.amazonaws.com") of
+     *            The endpoint (ex: "autoscaling.amazonaws.com") or a full URL,
+     *            including the protocol (ex: "https://autoscaling.amazonaws.com") of
      *            the region specific AWS endpoint this client will communicate
      *            with.
      *
@@ -324,6 +324,30 @@ public interface AmazonAutoScaling {
      *             either a problem with the data in the request, or a server side issue.
      */
     public DescribeNotificationConfigurationsResult describeNotificationConfigurations(DescribeNotificationConfigurationsRequest describeNotificationConfigurationsRequest) 
+            throws AmazonServiceException, AmazonClientException;
+
+    /**
+     * <p>
+     * Returns a list of all termination policies supported by Auto Scaling.
+     * </p>
+     *
+     * @param describeTerminationPolicyTypesRequest Container for the
+     *           necessary parameters to execute the DescribeTerminationPolicyTypes
+     *           service method on AmazonAutoScaling.
+     * 
+     * @return The response from the DescribeTerminationPolicyTypes service
+     *         method, as returned by AmazonAutoScaling.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonAutoScaling indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public DescribeTerminationPolicyTypesResult describeTerminationPolicyTypes(DescribeTerminationPolicyTypesRequest describeTerminationPolicyTypesRequest) 
             throws AmazonServiceException, AmazonClientException;
 
     /**
@@ -1137,6 +1161,25 @@ public interface AmazonAutoScaling {
      *             either a problem with the data in the request, or a server side issue.
      */
     public DescribeNotificationConfigurationsResult describeNotificationConfigurations() throws AmazonServiceException, AmazonClientException;
+    
+    /**
+     * <p>
+     * Returns a list of all termination policies supported by Auto Scaling.
+     * </p>
+     * 
+     * @return The response from the DescribeTerminationPolicyTypes service
+     *         method, as returned by AmazonAutoScaling.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonAutoScaling indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public DescribeTerminationPolicyTypesResult describeTerminationPolicyTypes() throws AmazonServiceException, AmazonClientException;
     
     /**
      * <p>

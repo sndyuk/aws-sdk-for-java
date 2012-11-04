@@ -47,7 +47,7 @@ import com.amazonaws.services.simpleemail.model.transform.*;
  * Getting Started Guide and the Amazon SES Developer Guide.
  * </p>
  * <p>
- * For specific details on how to construct a service request, please consult the<a href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+ * For specific details on how to construct a service request, please consult the <a href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
  * Amazon SES Developer Guide </a> .
  * </p>
  * <p>
@@ -205,32 +205,6 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
     
     /**
      * <p>
-     * Returns the user's current sending limits.
-     * </p>
-     *
-     * @param getSendQuotaRequest Container for the necessary parameters to
-     *           execute the GetSendQuota service method on AmazonSimpleEmailService.
-     * 
-     * @return The response from the GetSendQuota service method, as returned
-     *         by AmazonSimpleEmailService.
-     * 
-     *
-     * @throws AmazonClientException
-     *             If any internal errors are encountered inside the client while
-     *             attempting to make the request or handle the response.  For example
-     *             if a network connection is not available.
-     * @throws AmazonServiceException
-     *             If an error response is returned by AmazonSimpleEmailService indicating
-     *             either a problem with the data in the request, or a server side issue.
-     */
-    public GetSendQuotaResult getSendQuota(GetSendQuotaRequest getSendQuotaRequest) 
-            throws AmazonServiceException, AmazonClientException {
-        Request<GetSendQuotaRequest> request = new GetSendQuotaRequestMarshaller().marshall(getSendQuotaRequest);
-        return invoke(request, new GetSendQuotaResultStaxUnmarshaller());
-    }
-    
-    /**
-     * <p>
      * Deletes the specified identity (email address or domain) from the list
      * of verified identities.
      * </p>
@@ -351,42 +325,20 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
     
     /**
      * <p>
-     * Composes an email message based on input data, and then immediately
-     * queues the message for sending.
-     * </p>
-     * <p>
-     * <b>IMPORTANT:</b>If you have not yet requested production access to
-     * Amazon SES, then you will only be able to send email to and from
-     * verified email addresses and domains. For more information, go to the
-     * Amazon SES Developer Guide.
-     * </p>
-     * <p>
-     * The total size of the message cannot exceed 10 MB.
-     * </p>
-     * <p>
-     * Amazon SES has a limit on the total number of recipients per message:
-     * The combined number of To:, CC: and BCC: email addresses cannot exceed
-     * 50. If you need to send an email message to a larger audience, you can
-     * divide your recipient list into groups of 50 or fewer, and then call
-     * Amazon SES repeatedly to send the message to each group.
-     * </p>
-     * <p>
-     * For every message that you send, the total number of recipients (To:,
-     * CC: and BCC:) is counted against your <i>sending quota</i> - the
-     * maximum number of emails you can send in a 24-hour period. For
-     * information about your sending quota, go to the "Managing Your Sending
-     * Activity" section of the<a
+     * Given a list of verified identities (email addresses and/or domains),
+     * returns a structure describing identity notification attributes. For
+     * more information about feedback notification, see the <a
      * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
      * Amazon SES Developer Guide </a> .
      * </p>
      *
-     * @param sendEmailRequest Container for the necessary parameters to
-     *           execute the SendEmail service method on AmazonSimpleEmailService.
+     * @param getIdentityNotificationAttributesRequest Container for the
+     *           necessary parameters to execute the GetIdentityNotificationAttributes
+     *           service method on AmazonSimpleEmailService.
      * 
-     * @return The response from the SendEmail service method, as returned by
-     *         AmazonSimpleEmailService.
+     * @return The response from the GetIdentityNotificationAttributes
+     *         service method, as returned by AmazonSimpleEmailService.
      * 
-     * @throws MessageRejectedException
      *
      * @throws AmazonClientException
      *             If any internal errors are encountered inside the client while
@@ -396,22 +348,39 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
      *             If an error response is returned by AmazonSimpleEmailService indicating
      *             either a problem with the data in the request, or a server side issue.
      */
-    public SendEmailResult sendEmail(SendEmailRequest sendEmailRequest) 
+    public GetIdentityNotificationAttributesResult getIdentityNotificationAttributes(GetIdentityNotificationAttributesRequest getIdentityNotificationAttributesRequest) 
             throws AmazonServiceException, AmazonClientException {
-        Request<SendEmailRequest> request = new SendEmailRequestMarshaller().marshall(sendEmailRequest);
-        return invoke(request, new SendEmailResultStaxUnmarshaller());
+        Request<GetIdentityNotificationAttributesRequest> request = new GetIdentityNotificationAttributesRequestMarshaller().marshall(getIdentityNotificationAttributesRequest);
+        return invoke(request, new GetIdentityNotificationAttributesResultStaxUnmarshaller());
     }
     
     /**
      * <p>
-     * Verifies a domain.
+     * Returns a set of DNS records, or <i>tokens</i> , that must be
+     * published in the domain name's DNS to complete the DKIM verification
+     * process. These tokens are DNS <code>CNAME</code> records that point to
+     * DKIM public keys hosted by Amazon SES. To complete the DKIM
+     * verification process, these tokens must be published in the domain's
+     * DNS. The tokens must remain published in order for Easy DKIM signing
+     * to function correctly.
+     * </p>
+     * <p>
+     * After the tokens are added to the domain's DNS, Amazon SES will be
+     * able to DKIM-sign email originating from that domain. To enable or
+     * disable Easy DKIM signing for a domain, use the
+     * <code>SetIdentityDkimEnabled</code> action.
+     * </p>
+     * <p>
+     * For more information about Easy DKIM, go to the <a
+     * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+     * Amazon SES Developer Guide </a> .
      * </p>
      *
-     * @param verifyDomainIdentityRequest Container for the necessary
-     *           parameters to execute the VerifyDomainIdentity service method on
+     * @param verifyDomainDkimRequest Container for the necessary parameters
+     *           to execute the VerifyDomainDkim service method on
      *           AmazonSimpleEmailService.
      * 
-     * @return The response from the VerifyDomainIdentity service method, as
+     * @return The response from the VerifyDomainDkim service method, as
      *         returned by AmazonSimpleEmailService.
      * 
      *
@@ -423,26 +392,46 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
      *             If an error response is returned by AmazonSimpleEmailService indicating
      *             either a problem with the data in the request, or a server side issue.
      */
-    public VerifyDomainIdentityResult verifyDomainIdentity(VerifyDomainIdentityRequest verifyDomainIdentityRequest) 
+    public VerifyDomainDkimResult verifyDomainDkim(VerifyDomainDkimRequest verifyDomainDkimRequest) 
             throws AmazonServiceException, AmazonClientException {
-        Request<VerifyDomainIdentityRequest> request = new VerifyDomainIdentityRequestMarshaller().marshall(verifyDomainIdentityRequest);
-        return invoke(request, new VerifyDomainIdentityResultStaxUnmarshaller());
+        Request<VerifyDomainDkimRequest> request = new VerifyDomainDkimRequestMarshaller().marshall(verifyDomainDkimRequest);
+        return invoke(request, new VerifyDomainDkimResultStaxUnmarshaller());
     }
     
     /**
      * <p>
-     * Deletes the specified email address from the list of verified
-     * addresses.
+     * Returns the DNS records, or <i>tokens</i> , that must be present in
+     * order for Easy DKIM to sign outgoing email messages.
      * </p>
      * <p>
-     * <b>IMPORTANT:</b>The DeleteVerifiedEmailAddress action is deprecated
-     * as of the May 15, 2012 release of Domain Verification. The
-     * DeleteIdentity action is now preferred.
+     * This action takes a list of verified identities as input. It then
+     * returns the following information for each identity:
+     * </p>
+     * 
+     * <ul>
+     * <li>Whether Easy DKIM signing is enabled or disabled.</li>
+     * <li>The set of tokens that are required for Easy DKIM signing. These
+     * tokens must be published in the domain name's DNS records in order for
+     * DKIM verification to complete, and must remain published in order for
+     * Easy DKIM signing to operate correctly. (This information is only
+     * returned for domain name identities, not for email addresses.)</li>
+     * <li>Whether Amazon SES has successfully verified the DKIM tokens
+     * published in the domain name's DNS. (This information is only returned
+     * for domain name identities, not for email addresses.)</li>
+     * 
+     * </ul>
+     * <p>
+     * For more information about Easy DKIM signing, go to the <a
+     * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+     * Amazon SES Developer Guide </a> .
      * </p>
      *
-     * @param deleteVerifiedEmailAddressRequest Container for the necessary
-     *           parameters to execute the DeleteVerifiedEmailAddress service method on
+     * @param getIdentityDkimAttributesRequest Container for the necessary
+     *           parameters to execute the GetIdentityDkimAttributes service method on
      *           AmazonSimpleEmailService.
+     * 
+     * @return The response from the GetIdentityDkimAttributes service
+     *         method, as returned by AmazonSimpleEmailService.
      * 
      *
      * @throws AmazonClientException
@@ -453,10 +442,10 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
      *             If an error response is returned by AmazonSimpleEmailService indicating
      *             either a problem with the data in the request, or a server side issue.
      */
-    public void deleteVerifiedEmailAddress(DeleteVerifiedEmailAddressRequest deleteVerifiedEmailAddressRequest) 
+    public GetIdentityDkimAttributesResult getIdentityDkimAttributes(GetIdentityDkimAttributesRequest getIdentityDkimAttributesRequest) 
             throws AmazonServiceException, AmazonClientException {
-        Request<DeleteVerifiedEmailAddressRequest> request = new DeleteVerifiedEmailAddressRequestMarshaller().marshall(deleteVerifiedEmailAddressRequest);
-        invoke(request, null);
+        Request<GetIdentityDkimAttributesRequest> request = new GetIdentityDkimAttributesRequestMarshaller().marshall(getIdentityDkimAttributesRequest);
+        return invoke(request, new GetIdentityDkimAttributesResultStaxUnmarshaller());
     }
     
     /**
@@ -604,8 +593,59 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
     
     /**
      * <p>
+     * Enables or disables Easy DKIM signing of email sent from an identity:
+     * </p>
+     * 
+     * <ul>
+     * <li>If Easy DKIM signing is enabled for a domain name identity (e.g.,
+     * <code>example.com</code> ), then Amazon SES will DKIM-sign all email
+     * sent by addresses under that domain name (e.g.,
+     * <code>user@example.com</code> ).</li>
+     * <li>If Easy DKIM signing is enabled for an email address, then Amazon
+     * SES will DKIM-sign all email sent by that email address.</li>
+     * 
+     * </ul>
+     * <p>
+     * For email addresses (e.g., <code>user@example.com</code> ), you can
+     * only enable Easy DKIM signing if the corresponding domain (e.g.,
+     * <code>example.com</code> ) has been set up for Easy DKIM using the AWS
+     * Console or the <code>VerifyDomainDkim</code> action.
+     * </p>
+     * <p>
+     * For more information about Easy DKIM signing, go to the <a
+     * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+     * Amazon SES Developer Guide </a> .
+     * </p>
+     *
+     * @param setIdentityDkimEnabledRequest Container for the necessary
+     *           parameters to execute the SetIdentityDkimEnabled service method on
+     *           AmazonSimpleEmailService.
+     * 
+     * @return The response from the SetIdentityDkimEnabled service method,
+     *         as returned by AmazonSimpleEmailService.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public SetIdentityDkimEnabledResult setIdentityDkimEnabled(SetIdentityDkimEnabledRequest setIdentityDkimEnabledRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<SetIdentityDkimEnabledRequest> request = new SetIdentityDkimEnabledRequestMarshaller().marshall(setIdentityDkimEnabledRequest);
+        return invoke(request, new SetIdentityDkimEnabledResultStaxUnmarshaller());
+    }
+    
+    /**
+     * <p>
      * Returns the user's current sending limits.
      * </p>
+     *
+     * @param getSendQuotaRequest Container for the necessary parameters to
+     *           execute the GetSendQuota service method on AmazonSimpleEmailService.
      * 
      * @return The response from the GetSendQuota service method, as returned
      *         by AmazonSimpleEmailService.
@@ -619,8 +659,187 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
      *             If an error response is returned by AmazonSimpleEmailService indicating
      *             either a problem with the data in the request, or a server side issue.
      */
-    public GetSendQuotaResult getSendQuota() throws AmazonServiceException, AmazonClientException {
-        return getSendQuota(new GetSendQuotaRequest());
+    public GetSendQuotaResult getSendQuota(GetSendQuotaRequest getSendQuotaRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<GetSendQuotaRequest> request = new GetSendQuotaRequestMarshaller().marshall(getSendQuotaRequest);
+        return invoke(request, new GetSendQuotaResultStaxUnmarshaller());
+    }
+    
+    /**
+     * <p>
+     * Given an identity (email address or domain), enables or disables
+     * whether Amazon SES forwards feedback notifications as email. Feedback
+     * forwarding may only be disabled when both complaint and bounce topics
+     * are set. For more information about feedback notification, see the <a
+     * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+     * Amazon SES Developer Guide </a> .
+     * </p>
+     *
+     * @param setIdentityFeedbackForwardingEnabledRequest Container for the
+     *           necessary parameters to execute the
+     *           SetIdentityFeedbackForwardingEnabled service method on
+     *           AmazonSimpleEmailService.
+     * 
+     * @return The response from the SetIdentityFeedbackForwardingEnabled
+     *         service method, as returned by AmazonSimpleEmailService.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public SetIdentityFeedbackForwardingEnabledResult setIdentityFeedbackForwardingEnabled(SetIdentityFeedbackForwardingEnabledRequest setIdentityFeedbackForwardingEnabledRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<SetIdentityFeedbackForwardingEnabledRequest> request = new SetIdentityFeedbackForwardingEnabledRequestMarshaller().marshall(setIdentityFeedbackForwardingEnabledRequest);
+        return invoke(request, new SetIdentityFeedbackForwardingEnabledResultStaxUnmarshaller());
+    }
+    
+    /**
+     * <p>
+     * Verifies a domain.
+     * </p>
+     *
+     * @param verifyDomainIdentityRequest Container for the necessary
+     *           parameters to execute the VerifyDomainIdentity service method on
+     *           AmazonSimpleEmailService.
+     * 
+     * @return The response from the VerifyDomainIdentity service method, as
+     *         returned by AmazonSimpleEmailService.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public VerifyDomainIdentityResult verifyDomainIdentity(VerifyDomainIdentityRequest verifyDomainIdentityRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<VerifyDomainIdentityRequest> request = new VerifyDomainIdentityRequestMarshaller().marshall(verifyDomainIdentityRequest);
+        return invoke(request, new VerifyDomainIdentityResultStaxUnmarshaller());
+    }
+    
+    /**
+     * <p>
+     * Composes an email message based on input data, and then immediately
+     * queues the message for sending.
+     * </p>
+     * <p>
+     * <b>IMPORTANT:</b>If you have not yet requested production access to
+     * Amazon SES, then you will only be able to send email to and from
+     * verified email addresses and domains. For more information, go to the
+     * Amazon SES Developer Guide.
+     * </p>
+     * <p>
+     * The total size of the message cannot exceed 10 MB.
+     * </p>
+     * <p>
+     * Amazon SES has a limit on the total number of recipients per message:
+     * The combined number of To:, CC: and BCC: email addresses cannot exceed
+     * 50. If you need to send an email message to a larger audience, you can
+     * divide your recipient list into groups of 50 or fewer, and then call
+     * Amazon SES repeatedly to send the message to each group.
+     * </p>
+     * <p>
+     * For every message that you send, the total number of recipients (To:,
+     * CC: and BCC:) is counted against your <i>sending quota</i> - the
+     * maximum number of emails you can send in a 24-hour period. For
+     * information about your sending quota, go to the "Managing Your Sending
+     * Activity" section of the<a
+     * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+     * Amazon SES Developer Guide </a> .
+     * </p>
+     *
+     * @param sendEmailRequest Container for the necessary parameters to
+     *           execute the SendEmail service method on AmazonSimpleEmailService.
+     * 
+     * @return The response from the SendEmail service method, as returned by
+     *         AmazonSimpleEmailService.
+     * 
+     * @throws MessageRejectedException
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public SendEmailResult sendEmail(SendEmailRequest sendEmailRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<SendEmailRequest> request = new SendEmailRequestMarshaller().marshall(sendEmailRequest);
+        return invoke(request, new SendEmailResultStaxUnmarshaller());
+    }
+    
+    /**
+     * <p>
+     * Deletes the specified email address from the list of verified
+     * addresses.
+     * </p>
+     * <p>
+     * <b>IMPORTANT:</b>The DeleteVerifiedEmailAddress action is deprecated
+     * as of the May 15, 2012 release of Domain Verification. The
+     * DeleteIdentity action is now preferred.
+     * </p>
+     *
+     * @param deleteVerifiedEmailAddressRequest Container for the necessary
+     *           parameters to execute the DeleteVerifiedEmailAddress service method on
+     *           AmazonSimpleEmailService.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public void deleteVerifiedEmailAddress(DeleteVerifiedEmailAddressRequest deleteVerifiedEmailAddressRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<DeleteVerifiedEmailAddressRequest> request = new DeleteVerifiedEmailAddressRequestMarshaller().marshall(deleteVerifiedEmailAddressRequest);
+        invoke(request, null);
+    }
+    
+    /**
+     * <p>
+     * Given an identity (email address or domain), sets the Amazon SNS topic
+     * to which Amazon SES will publish bounce and complaint notifications
+     * for emails sent with that identity as the <code>Source</code> .
+     * Publishing to topics may only be disabled when feedback
+     * forwarding is enabled. For more information about feedback
+     * notification, see the <a
+     * href="http://docs.amazonwebservices.com/ses/latest/DeveloperGuide">
+     * Amazon SES Developer Guide </a> .
+     * </p>
+     *
+     * @param setIdentityNotificationTopicRequest Container for the necessary
+     *           parameters to execute the SetIdentityNotificationTopic service method
+     *           on AmazonSimpleEmailService.
+     * 
+     * @return The response from the SetIdentityNotificationTopic service
+     *         method, as returned by AmazonSimpleEmailService.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public SetIdentityNotificationTopicResult setIdentityNotificationTopic(SetIdentityNotificationTopicRequest setIdentityNotificationTopicRequest) 
+            throws AmazonServiceException, AmazonClientException {
+        Request<SetIdentityNotificationTopicRequest> request = new SetIdentityNotificationTopicRequestMarshaller().marshall(setIdentityNotificationTopicRequest);
+        return invoke(request, new SetIdentityNotificationTopicResultStaxUnmarshaller());
     }
     
     /**
@@ -697,6 +916,27 @@ public class AmazonSimpleEmailServiceClient extends AmazonWebServiceClient imple
      */
     public ListIdentitiesResult listIdentities() throws AmazonServiceException, AmazonClientException {
         return listIdentities(new ListIdentitiesRequest());
+    }
+    
+    /**
+     * <p>
+     * Returns the user's current sending limits.
+     * </p>
+     * 
+     * @return The response from the GetSendQuota service method, as returned
+     *         by AmazonSimpleEmailService.
+     * 
+     *
+     * @throws AmazonClientException
+     *             If any internal errors are encountered inside the client while
+     *             attempting to make the request or handle the response.  For example
+     *             if a network connection is not available.
+     * @throws AmazonServiceException
+     *             If an error response is returned by AmazonSimpleEmailService indicating
+     *             either a problem with the data in the request, or a server side issue.
+     */
+    public GetSendQuotaResult getSendQuota() throws AmazonServiceException, AmazonClientException {
+        return getSendQuota(new GetSendQuotaRequest());
     }
     
 

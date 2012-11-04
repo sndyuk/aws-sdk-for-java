@@ -121,7 +121,7 @@ public class ActivityTaskPoller extends SynchronousActivityTaskPoller {
 
         RuntimeException e2 = new RuntimeException(
                 "Failure taskId=\"" + task.getStartedEventId() + "\" workflowExecutionRunId=\"" + execution.getRunId()
-                        + "\" workflowExecutionId=\"" + execution.getWorkflowId(), failure);
+                        + "\" workflowExecutionId=\"" + execution.getWorkflowId() + "\"", failure);
         return e2;
     }
 

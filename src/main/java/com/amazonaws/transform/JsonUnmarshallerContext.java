@@ -120,7 +120,7 @@ public class JsonUnmarshallerContext {
 	}
 
 	public boolean isStartOfDocument() {
-		return jsonParser.getCurrentToken() == null;
+		return jsonParser == null || jsonParser.getCurrentToken() == null;
 	}
 
 	/**
@@ -185,6 +185,10 @@ public class JsonUnmarshallerContext {
 
 	    nextToken = jsonParser.nextToken();
 	    return nextToken;
+	}
+	
+	public JsonParser getJsonParser() {
+	    return jsonParser;
 	}
 
 	/**
